@@ -2,9 +2,20 @@
 
 import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation";
 
 export default function Nav() {
   const { data: session } = useSession()
+  const router = useRouter()
+
+  const signin = () => {
+    signIn("facebook")
+  }
+
+  const signout = () => {
+    router.push('/')
+    signOut()
+  }
 
   return (
     <header>
@@ -13,18 +24,21 @@ export default function Nav() {
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <Link href="/login">Login</Link>
+              <Link href="/">Home</Link>
             </li>
             <li>
               <Link href="/protected/gallery">Gallery</Link>
+            </li>
+            <li>
+              <Link href="/protected/profile">Profile</Link>
             </li>
           </ul>
         </div>
         <div className="navbar-end">
           {session ? (
-            <button onClick={() => signOut()}>Sign out</button>
+            <button onClick={signout}>Sign out</button>
           ) : (
-            <button onClick={() => signIn("facebook")}>Sign in</button>
+            <button onClick={signin}>Sign in</button>
           )}
         </div>
       </nav>

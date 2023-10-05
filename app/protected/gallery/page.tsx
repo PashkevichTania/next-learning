@@ -5,6 +5,7 @@ interface Post {
   media_type: string
   permalink: string
   caption: string
+  timestamp: string
 }
 async function getData() {
   const fields = "id,username,caption,media_url,timestamp,media_type,permalink"
@@ -33,15 +34,26 @@ export default async function Gallery() {
   return (
     <div>
       <h2 className="text-center font-bold text-xl mb-4">Instagram Feed</h2>
-      <div className="instagram-posts">
+      <div className="flex flex-row align-center flex-wrap justify-between">
         {data?.map((post) => (
-          <div key={post.id} className="instagram-post">
-            <img src={post.media_url} alt={post.caption} />
-            <p>{post.caption}</p>
-            <a href={post.permalink} target="_blank" rel="noopener noreferrer">
-              View on Instagram
-            </a>
-          </div>
+            <div key={post.id} className="card card-compact w-96 bg-base-100 shadow-xl mb-2 mr-2">
+              <figure><img src={post.media_url} alt="post" /></figure>
+              <div className="card-body">
+                <h2 className="card-title">{post.username}</h2>
+                <p>{post.caption}</p>
+                <p>{post.timestamp}</p>
+                <div className="card-actions justify-end">
+                  <a
+                      className="btn btn-outline btn-primary"
+                      role="button"
+                      href={post.permalink}
+                      target="_blank"
+                      rel="noopener noreferrer">
+                    View on Instagram
+                  </a>
+                </div>
+              </div>
+            </div>
         ))}
       </div>
     </div>
