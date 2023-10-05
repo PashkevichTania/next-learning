@@ -16,6 +16,7 @@
     "react/jsx-props-no-spreading": "off",
     "react/button-has-type": "off",
     "no-plusplus": "off",
+    "no-param-reassign": "off",
     "class-methods-use-this": "off",
     "react/jsx-one-expression-per-line": "off",
     "import/no-anonymous-default-export": "off",

@@ -2,19 +2,31 @@ import NextAuth from "next-auth"
 import FacebookProvider from "next-auth/providers/facebook"
 
 export const authOptions = {
-  // Configure one or more authentication providers
   providers: [
-    // InstagramProvider({
-    //   clientId: process.env.INSTAGRAM_CLIENT_ID,
-    //   clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
-    // }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_APP_ID as string,
       clientSecret: process.env.FACEBOOK_APP_SECRET as string,
+      userinfo: {
+        params: { fields: "id,name,email,picture" },
+      },
     }),
-    // ...add more providers here
   ],
-  callbacks: {},
+  callbacks: {
+    jwt({ token, account, user }) {
+      console.log({ token, account, user })
+      if (account) {
+        token.accessToken = account.access_token
+        token.id = user?.id
+      }
+      return token
+    },
+    session({ session, token }) {
+      session.user.id = token.id
+      session.accessToken = token.accessToken
+
+      return session
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
 }
 const handler = NextAuth(authOptions)

@@ -5,6 +5,8 @@ import { Inter } from "next/font/google"
 
 import Provider from "@/app/context/client-provider"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import Nav from "@/app/components/Nav"
+import Footer from "@/app/components/Footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -15,12 +17,17 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions)
+
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <body className={inter.className}>
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          <Provider session={session}>{children}</Provider>
-        </main>
+        <Provider session={session}>
+          <Nav />
+          <main className="flex min-h-screen flex-col items-center justify-between p-24">
+            {children}
+          </main>
+          <Footer />
+        </Provider>
       </body>
     </html>
   )
