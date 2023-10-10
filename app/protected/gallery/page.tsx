@@ -24,7 +24,7 @@ export default async function Gallery() {
         {data?.map((post) => (
           <div key={post.id} className="card card-compact w-96 bg-base-100 shadow-xl mb-2 mr-2">
             <figure>
-              <Image src={post.media_url} alt="post" fill />
+              <Image src={post.media_url} alt="post" width="384" height="384" />
             </figure>
             <div className="card-body">
               <h2 className="card-title">{post.username}</h2>

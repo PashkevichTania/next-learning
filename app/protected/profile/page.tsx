@@ -6,6 +6,8 @@ import Image from "next/image"
 export default function Profile() {
   const { data: session } = useSession()
 
+  console.log("session", session)
+
   return (
     <div className="hero bg-base-200  rounded-lg">
       <div className="hero-content flex-col lg:flex-row-reverse p-8">
@@ -18,8 +20,12 @@ export default function Profile() {
         />
         <div>
           <h2 className="text-2xl font-bold mb-4">Meta User Profile</h2>
-          <p className="mb-2">User Name: {session?.user.name}</p>
-          <p className="mb-2">User Email: {session?.user.email}</p>
+          <p className="mb-2">
+            <span className="font-bold">User Name:</span> {session?.user.name}
+          </p>
+          <p className="mb-2">
+            <span className="font-bold">User Email:</span> {session?.user.email}
+          </p>
         </div>
       </div>
     </div>

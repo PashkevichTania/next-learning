@@ -4,6 +4,8 @@ import { DefaultJWT } from "next-auth/jwt"
 interface CUSTOM_JWT {
   is: string
   accessToken: string
+  iat?: number
+  exp?: number
 }
 
 declare module "next-auth" {
