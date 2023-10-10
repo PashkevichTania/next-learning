@@ -1,5 +1,6 @@
-import NextAuth from "next-auth"
+import NextAuth, { Session } from "next-auth"
 import FacebookProvider from "next-auth/providers/facebook"
+import { JWT } from "next-auth/jwt"
 
 export const authOptions = {
   providers: [
@@ -12,16 +13,15 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    jwt({ token, account, user }) {
-      console.log({ token, account, user })
-      if (account) {
-        token.accessToken = account.access_token
-        token.id = user?.id
-      }
-      return token
-    },
-    session({ session, token }) {
-      session.user.id = token.id
+    // jwt({ token, account, user }: { token: JWT; account: any; user: DefaultUser }) {
+    //   if (account) {
+    //     token.accessToken = account.access_token
+    //     token.id = user?.id
+    //   }
+    //   return token
+    // },
+    session({ session, token }: { session: Session; token: JWT }) {
+      session.user.id = token.id as string
       session.accessToken = token.accessToken
 
       return session

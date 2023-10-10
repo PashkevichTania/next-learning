@@ -1,20 +1,27 @@
 "use client"
 
-import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react"
+import Image from "next/image"
 
 export default function Profile() {
   const { data: session } = useSession()
 
-  return <div>
-    <h2 className='text-center font-bold text-xl mb-4'>Meta User Profile</h2>
-    <div>
-      <p>{session.user.name}</p>
-      <p>{session.user.email}</p>
-    </div>
-    <div className="avatar">
-      <div className="w-24 rounded">
-        <img src={session?.user.image} alt="avatar" />
+  return (
+    <div className="hero bg-base-200  rounded-lg">
+      <div className="hero-content flex-col lg:flex-row-reverse p-8">
+        <Image
+          width="150"
+          height="150"
+          src={session?.user.image || ""}
+          alt="avatar"
+          className="max-w-sm rounded-lg shadow-2xl"
+        />
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Meta User Profile</h2>
+          <p className="mb-2">User Name: {session?.user.name}</p>
+          <p className="mb-2">User Email: {session?.user.email}</p>
+        </div>
       </div>
     </div>
-  </div>
+  )
 }
