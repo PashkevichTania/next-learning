@@ -1,11 +1,14 @@
 import { DefaultUser } from "next-auth"
 import { DefaultJWT } from "next-auth/jwt"
 
-interface CUSTOM_JWT {
-  is: string
+interface CustomJwt {
   accessToken: string
-  iat?: number
-  exp?: number
+  iat: number
+  exp: number
+}
+
+interface CustomUser extends DefaultUser {
+  accessToken: string
 }
 
 declare module "next-auth" {
@@ -13,12 +16,14 @@ declare module "next-auth" {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
-    user: DefaultUser
+    user: CustomUser
     accessToken: string
     expires: string
   }
+
+  interface User extends CustomUser {}
 }
 
 declare module "next-auth/jwt" {
-  interface JWT extends DefaultJWT, CUSTOM_JWT {}
+  interface JWT extends DefaultJWT, CustomJwt {}
 }
