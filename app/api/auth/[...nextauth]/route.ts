@@ -1,4 +1,3 @@
-import axios from "axios"
 import NextAuth, { SessionStrategy, NextAuthOptions } from "next-auth"
 import FacebookProvider from "next-auth/providers/facebook"
 
@@ -9,11 +8,12 @@ const refetchToken = async (oldToken: string) => {
     &client_secret=${process.env.FACEBOOK_APP_SECRET}
     &set_token_expires_in_60_days=true
     &fb_exchange_token=${oldToken}`.replace(/\s/g, "")
-  const response = await axios.get(url)
+  const response = await fetch(url)
+  const data = await response.json()
 
-  console.log("rrr", response.data)
+  console.log("refresh", data)
 
-  return response.data
+  return data
 }
 
 const daysToSeconds = (days: number) => days * 24 * 60 * 60
@@ -46,7 +46,6 @@ export const authOptions: NextAuthOptions = {
       if (user?.accessToken) {
         // This will only be executed at login. Each next invocation will skip this part.
         token.accessToken = user.accessToken
-        refetchToken(user.accessToken)
       }
 
       // console.log("token: ", token)
@@ -58,7 +57,7 @@ export const authOptions: NextAuthOptions = {
       // today > (expDate - 1d), refresh token
       if (token.exp && new Date() > new Date(token.exp * 1000 - daysToSeconds(1))) {
         console.log("token expired:", { now: new Date(), exp: new Date(token.exp * 1000 - 60) })
-        const newToken = await refetchToken(user.accessToken)
+        const newToken = await refetchToken(token.accessToken)
         token.accessToken = newToken.access_token
         token.iat = Math.floor(Date.now() / 1000)
         token.exp = Math.floor(Date.now() / 1000) + newToken.expires_in
