@@ -33,9 +33,14 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       console.log("signin", { user, account })
-      if (account && account.provider === "facebook") {
+      if (account?.provider === "facebook") {
         // Update the user object with the long-lived access token
         if (user && account.access_token) user.accessToken = account.access_token
+        // Save user to DB if its not saved yet
+        fetch(`${process.env.BASE_URL}api/users`, {
+          method: "POST",
+          body: JSON.stringify({ user }),
+        })
       }
       return true
     },
