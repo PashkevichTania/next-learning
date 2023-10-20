@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   })
   console.log("session token", decoded)
 
-  return Response.json({ users: "" })
+  return Response.json({ users })
 }
 
 export async function POST(request: NextRequest) {
@@ -39,8 +39,9 @@ export async function POST(request: NextRequest) {
     })
     console.log("USER CREATED")
     return Response.json(`User with id: ${newUser.id} created`)
-  } catch (e: { message?: string }) {
+  } catch (e) {
+    const error = e as unknown as { message?: string }
     console.error(e)
-    return Response.json(e?.message || "something went wrong", { status: 500 })
+    return Response.json(error?.message || "something went wrong", { status: 500 })
   }
 }
