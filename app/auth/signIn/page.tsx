@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react"
 import { FormEvent, useState } from "react"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
+import PasswordInput from "@/app/components/PasswordInput"
 
 export default function SignIp() {
   const [isLoading, setLoading] = useState(false)
@@ -71,12 +72,7 @@ export default function SignIp() {
           <label className="label" htmlFor="password">
             <span className="text-base label-text">Password</span>
           </label>
-          <input
-            id="password"
-            type="password"
-            placeholder="Enter Password"
-            className="w-full input input-bordered"
-          />
+          <PasswordInput />
         </div>
         <div>
           <button className="btn btn-primary w-full" type="submit" disabled={isLoading}>

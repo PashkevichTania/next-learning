@@ -21,9 +21,9 @@ const config: Config = {
     themes: [
       {
         customDark: {
-          primary: "#818cf8",
-          secondary: "#f0abfc",
-          accent: "#1fb2a6",
+          primary: "#34d399",
+          secondary: "#fde68a",
+          accent: "#8b5cf6",
           neutral: "#2a323c",
           "base-100": "#1d232a",
           info: "#3abff8",
