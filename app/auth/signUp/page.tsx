@@ -13,8 +13,8 @@ export default function Signup() {
   const router = useRouter()
   const signUpWithFacebook = () => {
     setLoading(true)
-    signIn("facebook")
-      .then(() => router.push("/profile"))
+    signIn("facebook", { redirect: false })
+      .then(() => router.push("/protected/profile"))
       .finally(() => setLoading(false))
   }
 

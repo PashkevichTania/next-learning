@@ -14,7 +14,7 @@ export default function SignIp() {
   const signInWithFacebook = () => {
     setLoading(true)
     signIn("facebook")
-      .then(() => router.push("/profile"))
+      .then(() => router.push("/protected/profile"))
       .finally(() => setLoading(false))
   }
 
@@ -82,7 +82,7 @@ export default function SignIp() {
         </div>
         <div>
           <span>
-            Don&apos;t have a account ?{" "}
+            Don&apos;t have an account ?{" "}
             <Link href="/auth/signUp" className="link link-primary">
               Sign Up
             </Link>
