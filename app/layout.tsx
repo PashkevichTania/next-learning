@@ -3,7 +3,8 @@ import type { Metadata } from "next"
 import { getServerSession } from "next-auth/next"
 import { Inter } from "next/font/google"
 
-import Provider from "@/app/context/client-provider"
+import ToastProvider from "@/app/providers/toast-provider"
+import ClientProvider from "@/app/providers/client-provider"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import Nav from "@/app/components/Nav"
 import Footer from "@/app/components/Footer"
@@ -21,13 +22,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" data-theme="dark">
       <body className={inter.className}>
-        <Provider session={session}>
-          <Nav />
-          <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            {children}
-          </main>
-          <Footer />
-        </Provider>
+        <ClientProvider session={session}>
+          <ToastProvider>
+            <Nav />
+            <main className="flex min-h-screen flex-col items-center justify-between p-24">
+              {children}
+            </main>
+            <Footer />
+          </ToastProvider>
+        </ClientProvider>
       </body>
     </html>
   )

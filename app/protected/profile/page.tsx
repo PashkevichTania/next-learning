@@ -14,17 +14,20 @@ export default function Profile() {
         <Image
           width="150"
           height="150"
-          src={session?.user.image || ""}
+          src={session?.user.image || "/avatar.png"}
           alt="avatar"
           className="max-w-sm rounded-lg shadow-2xl"
         />
         <div>
-          <h2 className="text-2xl font-bold mb-4">Meta User Profile</h2>
+          <h2 className="text-2xl font-bold mb-4">User Profile</h2>
           <p className="mb-2">
             <span className="font-bold">User Name:</span> {session?.user.name}
           </p>
           <p className="mb-2">
             <span className="font-bold">User Email:</span> {session?.user.email}
+          </p>
+          <p className="mb-2">
+            <span className="font-bold">Role:</span> {session?.user.role}
           </p>
         </div>
       </div>

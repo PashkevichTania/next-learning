@@ -14,34 +14,3 @@ export async function GET(request: NextRequest) {
 
   return Response.json({ users })
 }
-
-export async function POST(request: NextRequest) {
-  try {
-    const { user } = await request.json()
-    const { id: userId, ...userData } = user
-
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        userId,
-      },
-    })
-
-    if (existingUser) {
-      console.log("USER EXISTS")
-      return Response.json(`User with id: ${userId} already exists`)
-    }
-    // User doesn't exist, save the new user
-    const newUser = await prisma.user.create({
-      data: {
-        ...userData,
-        userId,
-      },
-    })
-    console.log("USER CREATED")
-    return Response.json(`User with id: ${newUser.id} created`)
-  } catch (e) {
-    const error = e as unknown as { message?: string }
-    console.error(e)
-    return Response.json(error?.message || "something went wrong", { status: 500 })
-  }
-}

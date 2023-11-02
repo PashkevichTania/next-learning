@@ -1,20 +1,23 @@
 "use client"
 
 import Link from "next/link"
-import { signIn, signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation";
+import { signOut as NextAuthSignOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 export default function Nav() {
   const { data: session } = useSession()
   const router = useRouter()
 
-  const signin = () => {
-    signIn("facebook")
+  const signIn = () => {
+    router.push("/auth/signIn")
   }
 
-  const signout = () => {
-    router.push('/')
-    signOut()
+  const signUp = () => {
+    router.push("/auth/signUp")
+  }
+
+  const signOut = () => {
+    NextAuthSignOut()
   }
 
   return (
@@ -36,9 +39,18 @@ export default function Nav() {
         </div>
         <div className="navbar-end">
           {session ? (
-            <button onClick={signout}>Sign out</button>
+            <button onClick={signOut} className="btn btn-outline btn-secondary mr-3">
+              Sign out
+            </button>
           ) : (
-            <button onClick={signin}>Sign in</button>
+            <>
+              <button onClick={signIn} className="btn btn-outline btn-primary mr-3">
+                Sign in
+              </button>
+              <button onClick={signUp} className="btn btn-outline btn-secondary mr-3">
+                Sign up
+              </button>
+            </>
           )}
         </div>
       </nav>

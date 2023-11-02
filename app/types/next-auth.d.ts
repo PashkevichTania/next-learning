@@ -9,6 +9,7 @@ interface CustomJwt {
 
 interface CustomUser extends DefaultUser {
   accessToken: string
+  role: string
 }
 
 declare module "next-auth" {
@@ -17,7 +18,7 @@ declare module "next-auth" {
    */
   interface Session {
     user: CustomUser
-    accessToken: string
+    accessToken?: string
     expires: string
   }
 

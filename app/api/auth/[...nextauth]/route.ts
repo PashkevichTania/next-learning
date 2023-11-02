@@ -1,5 +1,6 @@
 import NextAuth, { SessionStrategy, NextAuthOptions } from "next-auth"
 import FacebookProvider from "next-auth/providers/facebook"
+import CredentialsProvider from "next-auth/providers/credentials"
 
 const refetchToken = async (oldToken: string) => {
   const url = `https://graph.facebook.com/v18.0/oauth/access_token
@@ -29,17 +30,47 @@ export const authOptions: NextAuthOptions = {
         params: { fields: "id,name,email,picture" },
       },
     }),
+    CredentialsProvider({
+      id: "credentials",
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "John Doe" },
+        password: { label: "Password", type: "password" },
+        email: { label: "Email", type: "email" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("No credentials")
+        }
+
+        const userCredentials = {
+          email: credentials.email,
+          password: credentials.password,
+        }
+
+        const res = await fetch(`${process.env.BASE_URL}/api/auth/signIn`, {
+          method: "POST",
+          body: JSON.stringify(userCredentials),
+        })
+
+        const { user, message } = await res.json()
+
+        if (res.status === 200 && user) {
+          return user
+        }
+        throw new Error(message || "Something went wrong")
+      },
+    }),
   ],
   callbacks: {
     async signIn({ user, account }) {
-      console.log("signin", { user, account })
       if (account?.provider === "facebook") {
         // Update the user object with the long-lived access token
         if (user && account.access_token) user.accessToken = account.access_token
         // Save user to DB if its not saved yet
-        fetch(`${process.env.BASE_URL}api/users`, {
+        fetch(`${process.env.BASE_URL}api/auth/signUp`, {
           method: "POST",
-          body: JSON.stringify({ user }),
+          body: JSON.stringify({ user, provider: "facebook" }),
         })
       }
       return true
@@ -48,10 +79,9 @@ export const authOptions: NextAuthOptions = {
     // This callback is called whenever a JSON Web Token is created (i.e. at sign in)
     // or updated (i.e whenever a session is accessed in the client).
     async jwt({ token, user }) {
-      if (user?.accessToken) {
-        // This will only be executed at login. Each next invocation will skip this part.
-        token.accessToken = user.accessToken
-      }
+      // This will only be executed at login. Each next invocation will skip this part.
+      if (user?.accessToken) token.accessToken = user.accessToken
+      if (user?.role) token.role = user.role
 
       // console.log("token: ", token)
       // console.log("token life min: ", (token?.exp - token?.iat) / 60)
@@ -74,6 +104,7 @@ export const authOptions: NextAuthOptions = {
     // The session callback is called whenever a session is checked.
     async session({ session, token }) {
       session.user.id = token.sub as string
+      session.user.role = token.role as string
       session.accessToken = token.accessToken
 
       return session
@@ -91,6 +122,12 @@ export const authOptions: NextAuthOptions = {
     // Seconds - How long until an idle session expires and is no longer valid.
     maxAge: daysToSeconds(30),
   },
+  pages: {
+    signIn: "/auth/signIn",
+    signOut: "/",
+    error: "/auth/signIn",
+  },
+  debug: process.env.NODE_ENV === "development",
 }
 const handler = NextAuth(authOptions)
 

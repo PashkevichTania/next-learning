@@ -12,6 +12,8 @@
     "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "max-len": ["error", { "code": 140 }],
     "object-curly-spacing": ["error", "always"],
+    "import/prefer-default-export": "off",
+    "import/no-named-as-default": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/button-has-type": "off",
@@ -22,6 +24,25 @@
     "import/no-anonymous-default-export": "off",
     "import/extensions": "off",
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "warn"
+    "@typescript-eslint/no-explicit-any": "warn",
+    "jsx-a11y/label-has-associated-control": ["error", {
+        "required": {
+          "some": [
+            "nesting",
+            "id"
+          ]
+        }
+      }
+    ],
+    "jsx-a11y/label-has-for": [ "error",
+      {
+        "required": {
+          "some": [
+            "nesting",
+            "id"
+          ]
+        }
+      }
+    ]
   }
 }
