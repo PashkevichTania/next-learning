@@ -10,6 +10,7 @@ const links = [
   { href: "/", title: "Home", isProtected: false, isAdmin: false },
   { href: "/gallery", title: "Gallery", isProtected: true, isAdmin: false },
   { href: "/profile", title: "Profile", isProtected: true, isAdmin: false },
+  { href: "/chat", title: "Chat", isProtected: true, isAdmin: false },
   { href: "/admin", title: "Admin panel", isProtected: true, isAdmin: true },
 ]
 export default function Nav() {

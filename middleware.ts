@@ -3,7 +3,7 @@ import { USER_ROLES } from "@/types/enums"
 
 // middleware is applied to all routes, use conditionals to select
 
-const protectedRoutes = ["/gallery", "/profile"]
+const protectedRoutes = ["/gallery", "/profile", "/chat"]
 
 export default withAuth(() => {}, {
   callbacks: {
