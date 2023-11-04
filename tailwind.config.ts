@@ -22,7 +22,7 @@ const config: Config = {
   daisyui: {
     themes: [
       {
-        customDark: {
+        dark: {
           primary: "#34d399",
           secondary: "#fde68a",
           accent: "#8b5cf6",
@@ -34,10 +34,25 @@ const config: Config = {
           error: "#dc2626",
         },
       },
-      "light",
+      {
+        light: {
+          primary: "#65c3c8",
+          secondary: "#ef9fbc",
+          accent: "#eeaf3a",
+          neutral: "#261230",
+          "base-100": "#faf7f5",
+          "base-200": "#efeae6",
+          "base-300": "#e7e2df",
+          "base-content": "#261230",
+          info: "#3abff8",
+          success: "#22c55e",
+          warning: "#fbbd23",
+          error: "#dc2626",
+        },
+      },
       "retro",
     ], // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
-    darkTheme: "customDark", // name of one of the included themes for dark mode
+    darkTheme: "dark", // name of one of the included themes for dark mode
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
     utils: true, // adds responsive and modifier utility classes
