@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
-import prisma from "@/app/lib/prisma"
+import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
-import { BasicUser, FacebookUser, Provider, User } from "@/app/types/types"
+import { BasicUser, FacebookUser, Provider, User } from "@/types"
 
 interface Response {
   user: User
@@ -14,14 +14,24 @@ export async function POST(request: NextRequest) {
 
     const { email } = user
 
-    const isExists = await prisma.user.findUnique({
+    let userFromDb = await prisma.user.findUnique({
       where: {
         email,
       },
     })
 
-    if (isExists) {
-      return Response.json({ message: `User with email: ${email} already exists` }, { status: 400 })
+    if (userFromDb) {
+      if (provider === "facebook") {
+        return Response.json({
+          message: `User with email: ${email} already exists`,
+          isError: false,
+          user: userFromDb,
+        })
+      }
+      return Response.json(
+        { message: `User with email: ${email} already exists`, isError: true },
+        { status: 400 }
+      )
     }
 
     let userData
@@ -54,15 +64,22 @@ export async function POST(request: NextRequest) {
         break
       }
       default: {
-        return Response.json({ message: `Invalid provider: ${provider}` }, { status: 400 })
+        return Response.json(
+          { message: `Invalid provider: ${provider}`, isError: true },
+          { status: 400 }
+        )
       }
     }
 
-    await prisma.user.create({
+    userFromDb = await prisma.user.create({
       data: userData,
     })
     console.log("USER CREATED")
-    return Response.json(`User with id: ${userData.userId} created`)
+    return Response.json({
+      message: `User with id: ${userData.userId} created`,
+      isError: false,
+      user: userFromDb,
+    })
   } catch (e) {
     const error = e as unknown as { message?: string }
     console.error(e)

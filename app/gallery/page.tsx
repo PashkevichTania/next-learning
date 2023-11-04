@@ -1,4 +1,4 @@
-import { Types } from "@/app/types/types"
+import { Post } from "@/types"
 import Image from "next/image"
 
 async function getData() {
@@ -11,7 +11,7 @@ async function getData() {
   const response = await fetch(url, { cache: "no-store" })
   const { data } = await response.json()
 
-  return data as Types[]
+  return data as Post[]
 }
 
 export default async function Gallery() {

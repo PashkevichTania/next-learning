@@ -3,11 +3,11 @@ import type { Metadata } from "next"
 import { getServerSession } from "next-auth/next"
 import { Inter } from "next/font/google"
 
-import ToastProvider from "@/app/providers/toast-provider"
-import ClientProvider from "@/app/providers/client-provider"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
-import Nav from "@/app/components/Nav"
-import Footer from "@/app/components/Footer"
+import ToastProvider from "@/providers/toast-provider"
+import ClientProvider from "@/providers/client-provider"
+import Nav from "@/components/Nav"
+import Footer from "@/components/Footer"
 
 const inter = Inter({ subsets: ["latin"] })
 

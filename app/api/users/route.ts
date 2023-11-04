@@ -1,4 +1,4 @@
-import prisma from "@/app/lib/prisma"
+import prisma from "@/lib/prisma"
 import { decode } from "next-auth/jwt"
 import { NextRequest } from "next/server"
 

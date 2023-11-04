@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation"
 
 const links = [
   { href: "/", title: "Home", isProtected: false, isAdmin: false },
-  { href: "/protected/gallery", title: "Gallery", isProtected: true, isAdmin: false },
-  { href: "/protected/profile", title: "Profile", isProtected: true, isAdmin: false },
-  { href: "/protected/admin", title: "Admin panel", isProtected: true, isAdmin: true },
+  { href: "/gallery", title: "Gallery", isProtected: true, isAdmin: false },
+  { href: "/profile", title: "Profile", isProtected: true, isAdmin: false },
+  { href: "/admin", title: "Admin panel", isProtected: true, isAdmin: true },
 ]
 export default function Nav() {
   const { data: session } = useSession()
@@ -34,15 +34,13 @@ export default function Nav() {
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal px-1">
             {links.map((link) => {
-              const linkElement = (
-                <li>
+              if (link.isAdmin && !isAdmin) return null
+              if (link.isProtected && !session) return null
+              return (
+                <li key={link.href}>
                   <Link href={link.href}>{link.title}</Link>
                 </li>
               )
-              if (!link.isProtected && !link.isAdmin) return linkElement
-              if (link.isProtected && session && !link.isAdmin) return linkElement
-              if (link.isAdmin && isAdmin) return linkElement
-              return null
             })}
           </ul>
         </div>

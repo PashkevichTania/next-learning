@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react"
 import { FormEvent, useState } from "react"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
-import PasswordInput from "@/app/components/PasswordInput"
+import PasswordInput from "@/components/PasswordInput"
 
 export default function SignIp() {
   const [isLoading, setLoading] = useState(false)
@@ -14,7 +14,7 @@ export default function SignIp() {
   const signInWithFacebook = () => {
     setLoading(true)
     signIn("facebook")
-      .then(() => router.push("/protected/profile"))
+      .then(() => router.push("/profile"))
       .finally(() => setLoading(false))
   }
 
@@ -46,7 +46,7 @@ export default function SignIp() {
         if (res?.error) {
           toast.error(res.error)
         } else {
-          router.push("/protected/profile")
+          router.push("/profile")
         }
       })
       .catch((error) => console.error("Error", error))
