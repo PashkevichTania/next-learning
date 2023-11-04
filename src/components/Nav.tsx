@@ -51,7 +51,7 @@ export default function Nav() {
       <nav className="navbar bg-neutral">
         <div className="navbar-start">
           <div className="dropdown">
-            <label className="btn btn-ghost md:hidden">
+            <label tabIndex={0} className="btn btn-ghost md:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -67,7 +67,10 @@ export default function Nav() {
                 />
               </svg>
             </label>
-            <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
               {renderLinks()}
             </ul>
           </div>
