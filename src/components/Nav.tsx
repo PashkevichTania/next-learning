@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { signOut as NextAuthSignOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { USER_ROLES } from "@/types/enums"
+import ThemeButton from "@/components/ThemeButton"
 
 const links = [
   { href: "/", title: "Home", isProtected: false, isAdmin: false },
@@ -12,7 +14,7 @@ const links = [
 ]
 export default function Nav() {
   const { data: session } = useSession()
-  const isAdmin = session?.user.role === "ADMIN"
+  const isAdmin = session?.user.role === USER_ROLES.ADMIN
   const router = useRouter()
 
   const signIn = () => {
@@ -29,8 +31,10 @@ export default function Nav() {
 
   return (
     <header>
-      <nav className="navbar bg-base-100 justify-between">
-        <div className="navbar-start" />
+      <nav className="navbar justify-between bg-neutral">
+        <div className="navbar-start">
+          <ThemeButton />
+        </div>
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal px-1">
             {links.map((link) => {
@@ -38,7 +42,9 @@ export default function Nav() {
               if (link.isProtected && !session) return null
               return (
                 <li key={link.href}>
-                  <Link href={link.href}>{link.title}</Link>
+                  <Link href={link.href} className="bg-base-100">
+                    {link.title}
+                  </Link>
                 </li>
               )
             })}

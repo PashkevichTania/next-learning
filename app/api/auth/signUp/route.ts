@@ -1,7 +1,9 @@
 import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
-import { BasicUser, FacebookUser, Provider, User } from "@/types"
+import { Provider } from "@/types"
+import { BasicUser, FacebookUser, User } from "@/types/user"
+import { PROVIDERS, USER_ROLES } from "@/types/enums"
 
 interface Response {
   user: User
@@ -21,7 +23,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (userFromDb) {
-      if (provider === "facebook") {
+      if (provider === PROVIDERS.FACEBOOK) {
         return Response.json({
           message: `User with email: ${email} already exists`,
           isError: false,
@@ -37,17 +39,17 @@ export async function POST(request: NextRequest) {
     let userData
 
     switch (provider) {
-      case "facebook": {
+      case PROVIDERS.FACEBOOK: {
         const { id: userId, ...fields } = user as FacebookUser
 
         userData = {
           ...fields,
           userId,
-          role: "USER",
+          role: USER_ROLES.USER,
         }
         break
       }
-      case "credentials": {
+      case PROVIDERS.CREDENTIAL: {
         const { password, name } = user as BasicUser
 
         const userId = crypto.randomUUID()
@@ -59,7 +61,7 @@ export async function POST(request: NextRequest) {
           email,
           hashedPassword,
           userId,
-          role: "USER",
+          role: USER_ROLES.USER,
         }
         break
       }
