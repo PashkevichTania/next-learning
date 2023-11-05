@@ -13,7 +13,16 @@ model User {
   email          String  @unique
   image          String?
   name           String
-  userId         String  @unique
+  facebookUserId String?  @unique
   role           String
   hashedPassword String?
+  chats          Chat[]  @relation("UserChat")
+}
+
+model Chat {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  user     User   @relation("UserChat", fields: [userId], references: [id])
+  userId   String @db.ObjectId
+  roomId   String
+  messages Json[]
 }

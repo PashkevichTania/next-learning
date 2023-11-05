@@ -1,5 +1,5 @@
 import { withAuth } from "next-auth/middleware"
-import { USER_ROLES } from "@/types/enums"
+import { UserRoles } from "@/types/enums"
 
 // middleware is applied to all routes, use conditionals to select
 
@@ -9,7 +9,7 @@ export default withAuth(() => {}, {
   callbacks: {
     authorized: ({ req, token }) => {
       const isAdminRoute = req.nextUrl.pathname.startsWith("/admin")
-      if (isAdminRoute && (!token || token.role !== USER_ROLES.ADMIN)) return false
+      if (isAdminRoute && (!token || token.role !== UserRoles.Admin)) return false
       const isProtectedRoute = protectedRoutes.some((protectedRoute) =>
         req.nextUrl.pathname.includes(protectedRoute)
       )

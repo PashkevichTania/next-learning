@@ -5,6 +5,7 @@ import { generateUID } from "@/lib/utils"
 import type { DefaultEventsMap } from "@socket.io/component-emitter"
 import type { Socket } from "socket.io-client"
 import { IMessage } from "@/types/socket"
+import { SocketEvents } from "@/types/enums"
 
 interface Props {
   roomId: string
@@ -30,15 +31,17 @@ export default function ChatRoom({ roomId, socket }: Props) {
         time: new Date(),
         uid: generateUID(),
       }
-      await socket.emit("send_msg", msgData)
-      setMessages((prev) => [...prev, msgData])
+      await socket.emit(SocketEvents.SendMessage, msgData)
       setCurrentMsg("")
     }
   }
 
   useEffect(() => {
-    socket.on("receive_msg", (data: IMessage) => {
-      setMessages((pre) => [...pre, data])
+    console.log("add resicer")
+    console.log("socket", socket)
+    socket.on(SocketEvents.ReceiveMessage, (data: IMessage) => {
+      console.log("receive_message", data)
+      setMessages((prevState) => [...prevState, data])
     })
   }, [socket])
   return (
@@ -51,9 +54,7 @@ export default function ChatRoom({ roomId, socket }: Props) {
             <span>{uid}</span>
             <span>{userName}</span>
             <span>{email}</span>
-            <span>
-              {time.getHours()}:{time.getMinutes()}
-            </span>
+            <span>{time.toString()}</span>
             <p>{msg}</p>
           </div>
         ))}

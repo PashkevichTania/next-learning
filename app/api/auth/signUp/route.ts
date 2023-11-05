@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
 import { Provider } from "@/types"
 import { BasicUser, FacebookUser, User } from "@/types/user"
-import { PROVIDERS, USER_ROLES } from "@/types/enums"
+import { Providers, UserRoles } from "@/types/enums"
 
 interface Response {
   user: User
@@ -23,36 +23,30 @@ export async function POST(request: NextRequest) {
     })
 
     if (userFromDb) {
-      if (provider === PROVIDERS.FACEBOOK) {
+      if (provider === Providers.Facebook) {
         return Response.json({
           message: `User with email: ${email} already exists`,
-          isError: false,
           user: userFromDb,
         })
       }
-      return Response.json(
-        { message: `User with email: ${email} already exists`, isError: true },
-        { status: 400 }
-      )
+      return Response.json({ message: `User with email: ${email} already exists` }, { status: 400 })
     }
 
     let userData
 
     switch (provider) {
-      case PROVIDERS.FACEBOOK: {
+      case Providers.Facebook: {
         const { id: userId, ...fields } = user as FacebookUser
 
         userData = {
           ...fields,
-          userId,
-          role: USER_ROLES.USER,
+          facebookUserId: userId,
+          role: UserRoles.User,
         }
         break
       }
-      case PROVIDERS.CREDENTIAL: {
+      case Providers.Credential: {
         const { password, name } = user as BasicUser
-
-        const userId = crypto.randomUUID()
 
         const hashedPassword = await bcrypt.hash(password, 2)
 
@@ -60,26 +54,21 @@ export async function POST(request: NextRequest) {
           name,
           email,
           hashedPassword,
-          userId,
-          role: USER_ROLES.USER,
+          role: UserRoles.User,
         }
         break
       }
       default: {
-        return Response.json(
-          { message: `Invalid provider: ${provider}`, isError: true },
-          { status: 400 }
-        )
+        return Response.json({ message: `Invalid provider: ${provider}` }, { status: 400 })
       }
     }
 
     userFromDb = await prisma.user.create({
       data: userData,
     })
-    console.log("USER CREATED")
+    console.log("USER CREATED", userFromDb)
     return Response.json({
-      message: `User with id: ${userData.userId} created`,
-      isError: false,
+      message: `User with id: ${userFromDb.id} created`,
       user: userFromDb,
     })
   } catch (e) {

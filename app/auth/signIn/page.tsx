@@ -7,14 +7,14 @@ import { FormEvent, useState } from "react"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import PasswordInput from "@/components/PasswordInput"
-import { PROVIDERS } from "@/types/enums"
+import { Providers } from "@/types/enums"
 
 export default function SignIp() {
   const [isLoading, setLoading] = useState(false)
   const router = useRouter()
   const signInWithFacebook = () => {
     setLoading(true)
-    signIn(PROVIDERS.FACEBOOK)
+    signIn(Providers.Facebook)
       .then(() => router.push("/profile"))
       .finally(() => setLoading(false))
   }
@@ -38,7 +38,7 @@ export default function SignIp() {
       return toast.error("Please fill in required fields")
     }
 
-    signIn(PROVIDERS.CREDENTIAL, {
+    signIn(Providers.Credential, {
       email,
       password,
       redirect: false,

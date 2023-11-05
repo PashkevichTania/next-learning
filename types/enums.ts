@@ -1,11 +1,18 @@
 /* eslint-disable no-shadow */
-enum USER_ROLES {
-  ADMIN = "ADMIN",
-  USER = "USER",
+enum UserRoles {
+  Admin = "ADMIN",
+  User = "USER",
 }
-enum PROVIDERS {
-  CREDENTIAL = "credentials",
-  FACEBOOK = "facebook",
+enum Providers {
+  Credential = "credentials",
+  Facebook = "facebook",
 }
 
-export { USER_ROLES, PROVIDERS }
+enum SocketEvents {
+  JoinRoom = "join_room",
+  Disconnect = "disconnect",
+  SendMessage = "send_message",
+  ReceiveMessage = "receive_message",
+}
+
+export { UserRoles, Providers, SocketEvents }

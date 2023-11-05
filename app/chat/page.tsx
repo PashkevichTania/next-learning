@@ -1,36 +1,32 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { io } from "socket.io-client"
+import { useEffect, useRef, useState } from "react"
 import ChatRoom from "@/components/ChatRoom"
 
 import type { DefaultEventsMap } from "@socket.io/component-emitter"
 import type { Socket } from "socket.io-client"
+import SocketSingleton from "@/src/webSocket/socketClientClass"
+import { SocketEvents } from "@/types/enums"
 
-const SERVER_URL = "http://localhost:8080" || process.env.NEXT_PUBLIC_SERVER_URL
 export default function Chat() {
-  const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap> | null>(null)
-  const [roomId, setRoomId] = useState("")
+  const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap> | null>()
+  const [roomId, setRoomId] = useState("111")
 
   const handleStartChat = () => {
-    console.log("socket", socket)
-    if (socket) {
+    console.log("socket", socketRef.current)
+    if (socketRef.current) {
       console.log("join")
       const newRoomId = crypto.randomUUID()
-      socket.emit("join_room", roomId || newRoomId)
+      socketRef.current.emit(SocketEvents.JoinRoom, roomId || newRoomId)
       setRoomId(newRoomId)
     }
   }
 
   useEffect(() => {
-    console.log("s", SERVER_URL)
-    if (SERVER_URL) {
-      console.log("connect")
-      const socketConnection = io(SERVER_URL, { transports: ["websocket", "polling"] })
-      setSocket(socketConnection)
-    }
+    socketRef.current = SocketSingleton.getInstance()
+    socketRef.current?.connect()
     return () => {
-      socket?.close()
+      socketRef.current?.close()
     }
   }, [])
 
@@ -38,10 +34,10 @@ export default function Chat() {
     <div>
       <h1 className="text-center font-bold text-xl mb-4">Chat</h1>
       <div>
-        <button className="btn btn-primary" disabled={!!roomId} onClick={handleStartChat}>
+        <button className="btn btn-primary" onClick={handleStartChat}>
           start chat
         </button>
-        {roomId && socket && <ChatRoom socket={socket} roomId={roomId} />}
+        {roomId && socketRef.current && <ChatRoom socket={socketRef.current} roomId={roomId} />}
       </div>
     </div>
   )

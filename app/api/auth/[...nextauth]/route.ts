@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { refetchToken, signInRequest, signUpRequest } from "@/lib/serverRequests"
 import { daysToSeconds } from "@/lib/utils"
 import { User } from "@/types/user"
-import { PROVIDERS } from "@/types/enums"
+import { Providers } from "@/types/enums"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     CredentialsProvider({
-      id: PROVIDERS.CREDENTIAL,
+      id: Providers.Credential,
       name: "Credentials",
       credentials: {
         username: { label: "Username", type: "text", placeholder: "John Doe" },
@@ -49,17 +49,18 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       console.log("SIGNIN", { user, account })
-      if (account?.provider === PROVIDERS.FACEBOOK) {
+      if (account?.provider === Providers.Facebook) {
         // Update the user object with the long-lived access token
         if (user && account.access_token) user.accessToken = account.access_token
         // Save user to DB if its not saved yet
         const signInUser = user as User
-        const response = await signUpRequest({ user: signInUser, provider: PROVIDERS.FACEBOOK })
-        const { user: userFromDb, isError } = await response.json()
-        if (!isError && userFromDb.role) {
+        const response = await signUpRequest({ user: signInUser, provider: Providers.Facebook })
+        const { user: userFromDb } = await response.json()
+        if (response.ok && userFromDb.role) {
           user.role = userFromDb.role
+          user.id = userFromDb.id
         }
-        return !isError
+        return response.ok
       }
       return true
     },

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { signOut as NextAuthSignOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { USER_ROLES } from "@/types/enums"
+import { UserRoles } from "@/types/enums"
 import ThemeButton from "@/components/ThemeButton"
 import { useCallback } from "react"
 
@@ -16,7 +16,7 @@ const links = [
 ]
 export default function Nav() {
   const { data: session } = useSession()
-  const isAdmin = session?.user.role === USER_ROLES.ADMIN
+  const isAdmin = session?.user.role === UserRoles.Admin
   const router = useRouter()
 
   const signIn = () => {

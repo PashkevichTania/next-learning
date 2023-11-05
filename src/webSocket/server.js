@@ -21,10 +21,10 @@ io.on("connection", (socket) => {
     console.log(`user with id-${socket.id} joined room - ${roomId}`)
   })
 
-  socket.on("send_msg", (data) => {
+  socket.on("send_message", (data) => {
     console.log(data, "DATA")
     // This will send a message to a specific room ID
-    socket.to(data.roomId).emit("receive_msg", data)
+    socket.to(data.roomId).emit("receive_message", data)
   })
 
   socket.on("disconnect", () => {
