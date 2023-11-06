@@ -5,13 +5,13 @@ import { Provider } from "@/types"
 import { BasicUser, FacebookUser, User } from "@/types/user"
 import { Providers, UserRoles } from "@/types/enums"
 
-interface Response {
+interface RequestData {
   user: User
   provider: Provider
 }
 export async function POST(request: NextRequest) {
   try {
-    const data: Response = await request.json()
+    const data: RequestData = await request.json()
     const { user, provider } = data
 
     const { email } = user

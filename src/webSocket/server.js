@@ -6,7 +6,7 @@ const httpServer = http.createServer()
 
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.BASE_URL, // frontend URL
+    origin: process.env.NEXT_PUBLIC_BASE_URL, // frontend URL
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,

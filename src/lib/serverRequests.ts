@@ -1,4 +1,5 @@
-import { User, Provider } from "@/types"
+import { Provider } from "@/types"
+import { User } from "@/types/user"
 
 export const refetchToken = async (oldToken: string) => {
   const url = `https://graph.facebook.com/v18.0/oauth/access_token
@@ -16,13 +17,19 @@ export const refetchToken = async (oldToken: string) => {
 }
 
 export const signInRequest = async (credentials: Record<"email" | "password", string>) =>
-  fetch(`${process.env.BASE_URL}/api/auth/signIn`, {
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/signIn`, {
     method: "POST",
     body: JSON.stringify(credentials),
   })
 
 export const signUpRequest = ({ user, provider }: { user: User; provider: Provider }) =>
-  fetch(`${process.env.BASE_URL}api/auth/signUp`, {
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/auth/signUp`, {
     method: "POST",
     body: JSON.stringify({ user, provider }),
+  })
+
+export const createChatRequest = ({ roomId, userId }: { roomId: string; userId: string }) =>
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/chat`, {
+    method: "POST",
+    body: JSON.stringify({ roomId, userId }),
   })
