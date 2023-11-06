@@ -2,7 +2,7 @@ import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
 import { Provider } from "@/types"
-import { BasicUser, FacebookUser, User } from "@/types/user"
+import { CredentialsUser, FacebookUser, User } from "@/types/user"
 import { Providers, UserRoles } from "@/types/enums"
 
 interface RequestData {
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
         break
       }
       case Providers.Credential: {
-        const { password, name } = user as BasicUser
+        const { password, name } = user as CredentialsUser
 
         const hashedPassword = await bcrypt.hash(password, 2)
 

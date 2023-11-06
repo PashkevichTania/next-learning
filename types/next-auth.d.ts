@@ -1,5 +1,6 @@
 import { DefaultUser } from "next-auth"
 import { DefaultJWT } from "next-auth/jwt"
+import { Role } from "@/types/index";
 
 interface CustomJwt {
   accessToken: string
@@ -9,7 +10,7 @@ interface CustomJwt {
 
 interface CustomUser extends DefaultUser {
   accessToken: string
-  role: string
+  role: Role
 }
 
 declare module "next-auth" {

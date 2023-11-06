@@ -8,15 +8,14 @@ import ThemeButton from "@/components/ThemeButton"
 import { useCallback } from "react"
 
 const links = [
-  { href: "/", title: "Home", isProtected: false, isAdmin: false },
-  { href: "/gallery", title: "Gallery", isProtected: true, isAdmin: false },
-  { href: "/profile", title: "Profile", isProtected: true, isAdmin: false },
-  { href: "/chat", title: "Chat", isProtected: true, isAdmin: false },
-  { href: "/admin", title: "Admin panel", isProtected: true, isAdmin: true },
+  { href: "/", title: "Home", userAccess: null },
+  { href: "/gallery", title: "Gallery", userAccess: [UserRoles.User, UserRoles.Admin] },
+  { href: "/profile", title: "Profile", userAccess: [UserRoles.User, UserRoles.Admin] },
+  { href: "/chat", title: "Chat", userAccess: [UserRoles.User] },
+  { href: "/admin", title: "Admin panel", userAccess: [UserRoles.Admin] },
 ]
 export default function Nav() {
   const { data: session } = useSession()
-  const isAdmin = session?.user.role === UserRoles.Admin
   const router = useRouter()
 
   const signIn = () => {
@@ -34,8 +33,7 @@ export default function Nav() {
   const renderLinks = useCallback(
     () =>
       links.map((link) => {
-        if (link.isAdmin && !isAdmin) return null
-        if (link.isProtected && !session) return null
+        if (link.userAccess && !link.userAccess.includes(session?.user.role)) return null
         return (
           <li key={link.href} className="mr-2">
             <Link href={link.href} className="bg-base-100 hover:bg-base-300">
@@ -44,7 +42,7 @@ export default function Nav() {
           </li>
         )
       }),
-    [isAdmin, session]
+    [session]
   )
 
   return (

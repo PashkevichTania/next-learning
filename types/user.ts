@@ -1,15 +1,19 @@
-export type BasicUser = {
+import { Role } from "@/types/index";
+
+type BasicUser = {
   name: string
   email: string
+  role: Role
+}
+
+export type CredentialsUser = BasicUser &  {
   password: string
 }
 
-export type FacebookUser = {
+export type FacebookUser = BasicUser & {
   id: string
-  name: string
-  email: string
   image: string
   accessToken: string
 }
 
-export type User = BasicUser | FacebookUser
+export type User = CredentialsUser | FacebookUser
