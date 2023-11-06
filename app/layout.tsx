@@ -6,7 +6,7 @@ import { Inter } from "next/font/google"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import ToastProvider from "@/providers/toast-provider"
 import ClientProvider from "@/providers/client-provider"
-import Nav from "@/components/Nav"
+import Nav from "@/components/Header/Nav"
 import Footer from "@/components/Footer"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -25,7 +25,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ClientProvider session={session}>
           <ToastProvider>
             <Nav />
-            <main className="flex flex-col grow items-center justify-between p-24">{children}</main>
+            <main className="flex flex-col grow items-center justify-between h-full w-full">{children}</main>
             <Footer />
           </ToastProvider>
         </ClientProvider>

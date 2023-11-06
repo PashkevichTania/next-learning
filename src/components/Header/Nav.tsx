@@ -1,11 +1,11 @@
 "use client"
 
+import { useCallback } from "react"
 import Link from "next/link"
 import { signOut as NextAuthSignOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { UserRoles } from "@/types/enums"
-import ThemeButton from "@/components/ThemeButton"
-import { useCallback } from "react"
+import ThemeButton from "@/components/Header/ThemeButton"
 
 const links = [
   { href: "/", title: "Home", userAccess: null },

@@ -9,7 +9,7 @@ export default function Profile() {
   console.log("session", session)
 
   return (
-    <div className="hero bg-base-200  rounded-lg">
+    <div className="hero bg-base-200 rounded-lg">
       <div className="hero-content flex-col lg:flex-row-reverse p-8">
         <Image
           width="150"

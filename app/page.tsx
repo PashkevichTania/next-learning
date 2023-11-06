@@ -1,5 +1,5 @@
 export default function Home() {
-  return <div>
+  return <div className="p-24">
     <h1 className="text-center font-bold text-xl mb-4">Meta auth with Instagram posts</h1>
     <h2 className="text-center font-bolder text-lg mb-4">HOME PAGE</h2>
     <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys

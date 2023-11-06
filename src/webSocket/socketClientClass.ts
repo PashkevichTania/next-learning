@@ -1,6 +1,6 @@
+import type { Socket } from "socket.io-client"
 import { io } from "socket.io-client"
 import type { DefaultEventsMap } from "@socket.io/component-emitter"
-import type { Socket } from "socket.io-client"
 
 export default class SocketSingleton {
   private static instance: Socket<DefaultEventsMap, DefaultEventsMap>
@@ -10,7 +10,12 @@ export default class SocketSingleton {
   static getInstance() {
     if (!this.instance) {
       console.log("Connect to websocket server")
-      this.instance = io(this.ENDPOINT, { transports: ["websocket", "polling"] })
+      this.instance = io(
+          this.ENDPOINT,
+          {
+            // autoConnect: true,
+            transports: ["websocket", "polling"]
+          })
     }
 
     return this.instance
