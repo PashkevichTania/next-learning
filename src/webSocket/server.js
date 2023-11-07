@@ -24,6 +24,8 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data) => {
     console.log(data, "DATA")
     // This will send a message to a specific room ID
+    // to sends to all in room except sender
+    // in sends to all in room including sender
     socket.to(data.roomId).emit("receive_message", data)
   })
 

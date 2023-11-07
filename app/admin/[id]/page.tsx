@@ -1,3 +1,5 @@
+import Room from "@/components/Chat/Room"
+
 export default function ChatPage({ params }: { params: { id: string } }) {
-  return <div>My Chat: {params.id}</div>
+  return <Room roomId={params.id} />
 }

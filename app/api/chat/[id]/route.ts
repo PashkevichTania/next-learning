@@ -1,5 +1,5 @@
-import { NextRequest } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextRequest } from "next/server"
+import prisma from "@/lib/prisma"
 
 interface Context {
   params: {
@@ -7,6 +7,7 @@ interface Context {
   }
 }
 
+// get chat room by id
 export async function GET(request: NextRequest, context: Context) {
   try {
     const { id } = context.params // '1'
@@ -14,10 +15,16 @@ export async function GET(request: NextRequest, context: Context) {
       where: {
         roomId: id,
       },
+      select: {
+        id: true,
+        userId: true,
+        roomId: true,
+        messages: true,
+      },
     })
 
-    return Response.json({ payload: [] })
-  }catch (e) {
+    return Response.json({ payload: chatRoom })
+  } catch (e) {
     const error = e as unknown as { message?: string }
     console.error(e)
     return Response.json({ message: error?.message || "something went wrong" }, { status: 500 })

@@ -3,6 +3,12 @@ export interface IMessage {
   roomId: string | number
   userName: string
   msg: string
-  time: Date
+  time: Date | string
   uid: string
+}
+
+export interface IChatResponse {
+  id: string
+  userId: string
+  roomId: string
 }

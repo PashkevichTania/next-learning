@@ -33,3 +33,10 @@ export const createChatRequest = ({ roomId, userId }: { roomId: string; userId: 
     method: "POST",
     body: JSON.stringify({ roomId, userId }),
   })
+
+export const getChatListRequest = ({ userId }: { userId?: string }) =>
+  fetch(
+    userId
+      ? `${process.env.NEXT_PUBLIC_BASE_URL}api/chat?userId=${userId}`
+      : `${process.env.NEXT_PUBLIC_BASE_URL}api/chat`
+  )

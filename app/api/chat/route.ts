@@ -1,10 +1,37 @@
 import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
+import { IChatResponse } from "@/types/socket"
 
 // Get chats for user or all chats for admin
 export async function GET(request: NextRequest) {
   try {
-    const allChats = await prisma.chat.findMany()
+    const { searchParams } = request.nextUrl
+    const userId = searchParams.get("userId")
+
+    let allChats: IChatResponse[] = []
+
+    if (userId) {
+      allChats = await prisma.chat.findMany({
+        where: {
+          userId,
+        },
+        select: {
+          id: true,
+          userId: true,
+          roomId: true,
+        },
+      })
+    } else {
+      allChats = await prisma.chat.findMany({
+        select: {
+          id: true,
+          userId: true,
+          roomId: true,
+        },
+      })
+    }
+
+    console.log(allChats)
 
     return Response.json({ payload: allChats })
   } catch (e) {
@@ -14,12 +41,12 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// create new chat
-
 interface RequestData {
   userId: string
   roomId: string
 }
+
+// create new chat
 export async function POST(request: NextRequest) {
   try {
     const data: RequestData = await request.json()
