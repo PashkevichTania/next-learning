@@ -2,9 +2,10 @@
 
 import { useState } from "react"
 import { BiSolidHide, BiSolidShow } from "react-icons/bi"
+import type { UseFormRegister } from "react-hook-form"
 
-export default function PasswordInput() {
-  const [show, setShow] = useState(true)
+export default function PasswordInput({ register }: { register: UseFormRegister<any> }) {
+  const [show, setShow] = useState(false)
 
   const toggleShow = () => {
     setShow((prevState) => !prevState)
@@ -14,6 +15,10 @@ export default function PasswordInput() {
     <div className="form-control">
       <div className="input-group">
         <input
+          {...register("password", {
+            required: "Password is required",
+            minLength: { message: "Password min length is 6", value: 6 },
+          })}
           id="password"
           type={show ? "text" : "password"}
           placeholder="Enter Password"

@@ -3,12 +3,25 @@
 import Link from "next/link"
 import { BiLogoFacebook } from "react-icons/bi"
 import { signIn } from "next-auth/react"
-import { FormEvent, useState } from "react"
+import { useState } from "react"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import PasswordInput from "@/components/PasswordInput"
+import { SubmitHandler, useForm } from "react-hook-form"
+
+type Inputs = {
+  name: string
+  email: string
+  password: string
+}
 
 export default function Signup() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>()
+
   const [isLoading, setLoading] = useState(false)
   const router = useRouter()
   const signUpWithFacebook = () => {
@@ -18,26 +31,12 @@ export default function Signup() {
       .finally(() => setLoading(false))
   }
 
-  const signUpWithCreds = (e: FormEvent<HTMLFormElement>) => {
+  const signUpWithCreds: SubmitHandler<Inputs> = (data) => {
     setLoading(true)
-    e.preventDefault()
-    const data = e.target as typeof e.target & {
-      name: { value: string }
-      email: { value: string }
-      password: { value: string }
-    }
 
-    const {
-      name: { value: name },
-      email: { value: email },
-      password: { value: password },
-    } = data
+    const { name, email, password } = data
 
     console.log({ password, email, name })
-
-    if (!name || !email || !password) {
-      return toast.error("Please fill in required fields")
-    }
 
     fetch(`/api/auth/signUp`, {
       method: "POST",
@@ -63,29 +62,51 @@ export default function Signup() {
   return (
     <div>
       <h1 className="text-center font-bold text-xl mb-4">Sign Up</h1>
-      <form className="space-y-4" onSubmit={signUpWithCreds}>
+      <form className="space-y-4" onSubmit={handleSubmit(signUpWithCreds)}>
         <div>
           <label className="label" htmlFor="name">
             <span className="text-base label-text">Name</span>
           </label>
-          <input id="name" type="text" placeholder="Name" className="w-full input input-bordered" />
+          <input
+            {...register("name", { required: "Name is required" })}
+            id="name"
+            type="text"
+            placeholder="Name"
+            className="w-full input input-bordered"
+          />
+          {errors.name && (
+            <label className="label" htmlFor="email">
+              <span className="label-text-alt text-error">{errors.name.message}</span>
+            </label>
+          )}
         </div>
         <div>
           <label className="label" htmlFor="email">
             <span className="text-base label-text">Email</span>
           </label>
           <input
+            {...register("email", { required: "Email is required" })}
             id="email"
             type="email"
             placeholder="Email Address"
             className="w-full input input-bordered"
           />
+          {errors.email && (
+            <label className="label" htmlFor="email">
+              <span className="label-text-alt text-error">{errors.email.message}</span>
+            </label>
+          )}
         </div>
         <div>
           <label className="label" htmlFor="password">
             <span className="text-base label-text">Password</span>
           </label>
-          <PasswordInput />
+          <PasswordInput register={register} />
+          {errors.password && (
+            <label className="label" htmlFor="password">
+              <span className="label-text-alt text-error">{errors.password.message}</span>
+            </label>
+          )}
         </div>
         <div>
           <button className="btn btn-primary w-full" type="submit" disabled={isLoading}>
