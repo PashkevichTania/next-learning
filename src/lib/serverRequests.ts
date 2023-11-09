@@ -1,5 +1,6 @@
 import { Provider } from "@/types"
 import { User } from "@/types/user"
+import { IMessage } from "@/types/socket"
 
 export const refetchToken = async (oldToken: string) => {
   const url = `https://graph.facebook.com/v18.0/oauth/access_token
@@ -32,6 +33,12 @@ export const createChatRequest = ({ roomId, userId }: { roomId: string; userId: 
   fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/chat`, {
     method: "POST",
     body: JSON.stringify({ roomId, userId }),
+  })
+
+export const updateChatRequest = ({ roomId, messages }: { roomId: string; messages: IMessage[] }) =>
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/chat`, {
+    method: "PUT",
+    body: JSON.stringify({ roomId, messages }),
   })
 
 export const getChatListRequest = ({ userId }: { userId?: string }) =>

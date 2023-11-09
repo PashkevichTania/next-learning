@@ -3,10 +3,10 @@ import type { Metadata } from "next"
 import { getServerSession } from "next-auth/next"
 import { Inter } from "next/font/google"
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import MainProvider from "@/providers/main-provider"
 import Nav from "@/components/Header/Nav"
 import Footer from "@/components/Footer"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={inter.className}>
         <MainProvider session={session}>
           <Nav />
-          <main className="flex flex-col grow items-center justify-between h-full w-full">
+          <main className="flex flex-col grow items-center justify-between h-full w-full overflow-auto">
             {children}
           </main>
           <Footer />

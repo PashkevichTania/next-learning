@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useCallback } from "react"
+import { memo, useCallback } from "react"
 import { IChatResponse } from "@/types/socket"
 
 interface Props {
@@ -75,4 +75,4 @@ ChatLayoutComponent.defaultProps = {
   handleStartChat: () => {},
 }
 
-export default ChatLayoutComponent
+export default memo(ChatLayoutComponent)

@@ -5,6 +5,7 @@ import { refetchToken, signInRequest, signUpRequest } from "@/lib/serverRequests
 import { daysToSeconds } from "@/lib/utils"
 import { User } from "@/types/user"
 import { Providers } from "@/types/enums"
+import { Role } from "@/types"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -95,7 +96,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       console.log("SESSION", { session, token })
       session.user.id = token.sub as string
-      session.user.role = token.role as string
+      session.user.role = token.role as Role
       session.accessToken = token.accessToken
 
       return session

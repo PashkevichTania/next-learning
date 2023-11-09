@@ -32,7 +32,7 @@ export default async function Gallery() {
               <p>{post.timestamp}</p>
               <div className="card-actions justify-end">
                 <a
-                  className="btn btn-outline btn-primary"
+                  className="btn btn-outline btn-secondary"
                   role="button"
                   href={post.permalink}
                   target="_blank"
