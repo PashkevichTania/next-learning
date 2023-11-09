@@ -36,8 +36,6 @@ export default function Signup() {
 
     const { name, email, password } = data
 
-    console.log({ password, email, name })
-
     fetch(`/api/auth/signUp`, {
       method: "POST",
       body: JSON.stringify({ user: { name, email, password }, provider: "credentials" }),

@@ -49,7 +49,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      console.log("SIGNIN", { user, account })
       if (account?.provider === Providers.Facebook) {
         // Update the user object with the long-lived access token
         if (user && account.access_token) user.accessToken = account.access_token
@@ -69,7 +68,6 @@ export const authOptions: NextAuthOptions = {
     // This callback is called whenever a JSON Web Token is created (i.e. at sign in)
     // or updated (i.e whenever a session is accessed in the client).
     async jwt({ token, user, account }) {
-      console.log("JWT", { token, user, account })
       // This will only be executed at login. Each next invocation will skip this part.
       if (user?.accessToken) token.accessToken = user.accessToken
       if (user?.role) token.role = user.role
@@ -94,7 +92,6 @@ export const authOptions: NextAuthOptions = {
 
     // The session callback is called whenever a session is checked.
     async session({ session, token }) {
-      console.log("SESSION", { session, token })
       session.user.id = token.sub as string
       session.user.role = token.role as Role
       session.accessToken = token.accessToken

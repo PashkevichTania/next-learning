@@ -35,10 +35,13 @@ export const createChatRequest = ({ roomId, userId }: { roomId: string; userId: 
     body: JSON.stringify({ roomId, userId }),
   })
 
+export const getChatRequest = (roomId: string) =>
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/chat/${roomId}`)
+
 export const updateChatRequest = ({ roomId, messages }: { roomId: string; messages: IMessage[] }) =>
-  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/chat`, {
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/chat/${roomId}`, {
     method: "PUT",
-    body: JSON.stringify({ roomId, messages }),
+    body: JSON.stringify({ messages }),
   })
 
 export const getChatListRequest = ({ userId }: { userId?: string }) =>

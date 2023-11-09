@@ -6,6 +6,11 @@ import { UserRoles } from "@/types/enums"
 const protectedRoutes = ["/gallery", "/profile", "/chat"]
 
 export default withAuth(() => {}, {
+  pages: {
+    signIn: "/auth/signIn",
+    signOut: "/",
+    error: "/auth/signIn",
+  },
   callbacks: {
     authorized: ({ req, token }) => {
       const isAdminRoute = req.nextUrl.pathname.startsWith("/admin")

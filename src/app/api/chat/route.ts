@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl
     const userId = searchParams.get("userId")
 
-    let allChats: IChatResponse[] = []
+    let allChats: Omit<IChatResponse, "messages">[] = []
 
     if (userId) {
       allChats = await prisma.chat.findMany({
@@ -31,8 +31,6 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    console.log(allChats)
-
     return Response.json({ payload: allChats })
   } catch (e) {
     const error = e as unknown as { message?: string }
@@ -50,7 +48,6 @@ interface RequestData {
 export async function POST(request: NextRequest) {
   try {
     const data: RequestData = await request.json()
-    console.log("data", data)
     const { roomId, userId } = data
 
     const newChat = await prisma.chat.create({
@@ -60,7 +57,7 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    console.log("Chat created")
+    console.log("POST CHAT", newChat)
     return Response.json({ chat: newChat })
   } catch (e) {
     const error = e as unknown as { message?: string }

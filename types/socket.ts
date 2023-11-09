@@ -11,4 +11,6 @@ export interface IChatResponse {
   id: string
   userId: string
   roomId: string
+
+  messages: IMessage[]
 }

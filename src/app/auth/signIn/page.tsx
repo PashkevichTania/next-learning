@@ -36,8 +36,6 @@ export default function SignIp() {
 
     const { email, password } = data
 
-    console.log({ email, password })
-
     signIn(Providers.Credential, {
       email,
       password,

@@ -1,11 +1,10 @@
 "use client"
 
-import { useChatList } from "@/src/hooks/useChatList"
-import ChatLayoutComponent from "@/components/Chat/layout"
+import { useChatListQuery } from "@/src/hooks/query/useChatListQuery"
+import ChatLayoutComponent from "@/components/Chat/Layout"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { data: chatList = [], isLoading } = useChatList()
-  console.log(chatList)
+  const { data: chatList = [], isLoading } = useChatListQuery()
 
   return (
     <ChatLayoutComponent isAdmin chatList={chatList} isLoading={isLoading}>
