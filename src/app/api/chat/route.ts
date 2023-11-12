@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
 import { IChatResponse } from "@/types/socket"
+import { serverErrorHandler } from "@/lib/serverErrorHandler"
 
 // Get chats for user or all chats for admin
 export async function GET(request: NextRequest) {
@@ -33,9 +34,7 @@ export async function GET(request: NextRequest) {
 
     return Response.json({ payload: allChats })
   } catch (e) {
-    const error = e as unknown as { message?: string }
-    console.error(e)
-    return Response.json({ message: error?.message || "something went wrong" }, { status: 500 })
+    serverErrorHandler(e)
   }
 }
 
@@ -60,8 +59,6 @@ export async function POST(request: NextRequest) {
     console.log("POST CHAT", newChat)
     return Response.json({ chat: newChat })
   } catch (e) {
-    const error = e as unknown as { message?: string }
-    console.error(e)
-    return Response.json({ message: error?.message || "something went wrong" }, { status: 500 })
+    return serverErrorHandler(e)
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
 import bcrypt from "bcrypt"
+import { serverErrorHandler } from "@/lib/serverErrorHandler"
 
 interface Response {
   email: string
@@ -35,8 +36,6 @@ export async function POST(request: NextRequest) {
 
     return Response.json({ user })
   } catch (e) {
-    const error = e as unknown as { message?: string }
-    console.error(e)
-    return Response.json({ message: error?.message || "something went wrong" }, { status: 500 })
+    return serverErrorHandler(e)
   }
 }

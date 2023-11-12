@@ -77,13 +77,14 @@ export default function Room({ roomId }: Props) {
     }
   }, [initialData?.messages])
 
-  // update messages in DB
+  // update messages in DB on new message
   useEffect(() => {
     if (messages.length && messages.length !== initialData?.messages.length) {
       updateChatDebounced({ roomId, messages })
     }
   }, [initialData?.messages.length, messages, roomId])
 
+  // receive message handler
   useEffect(() => {
     // FIXME: WHY IS IT RECEIVING 8 TIMES IN A ROW??????
     socket.on(SocketEvents.ReceiveMessage, (data: IMessage) => {

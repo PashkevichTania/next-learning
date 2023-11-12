@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server"
 import prisma from "@/lib/prisma"
+import { serverErrorHandler } from "@/lib/serverErrorHandler"
 
 interface Context {
   params: {
@@ -33,9 +34,7 @@ export async function GET(request: NextRequest, context: Context) {
 
     return Response.json({ payload: chatRoom })
   } catch (e) {
-    const error = e as unknown as { message?: string }
-    console.error(e)
-    return Response.json({ message: error?.message || "something went wrong" }, { status: 500 })
+    return serverErrorHandler(e)
   }
 }
 
@@ -60,9 +59,7 @@ export async function PUT(request: NextRequest, context: Context) {
     console.log("PUT CHAT", chatRoom)
     return Response.json({ payload: chatRoom })
   } catch (e) {
-    const error = e as unknown as { message?: string }
-    console.error(e)
-    return Response.json({ message: error?.message || "something went wrong" }, { status: 500 })
+    return serverErrorHandler(e)
   }
 }
 
@@ -80,8 +77,6 @@ export async function DELETE(request: NextRequest, context: Context) {
     console.log("DELETE CHAT", chat)
     return Response.json({ payload: chat })
   } catch (e) {
-    const error = e as unknown as { message?: string }
-    console.error(e)
-    return Response.json({ message: error?.message || "something went wrong" }, { status: 500 })
+    return serverErrorHandler(e)
   }
 }

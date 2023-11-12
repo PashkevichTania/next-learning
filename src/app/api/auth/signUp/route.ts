@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import { Provider } from "@/types"
 import { CredentialsUser, FacebookUser, User } from "@/types/user"
 import { Providers, UserRoles } from "@/types/enums"
+import { serverErrorHandler } from "@/lib/serverErrorHandler"
 
 interface RequestData {
   user: User
@@ -72,8 +73,6 @@ export async function POST(request: NextRequest) {
       user: userFromDb,
     })
   } catch (e) {
-    const error = e as unknown as { message?: string }
-    console.error(e)
-    return Response.json({ message: error?.message || "something went wrong" }, { status: 500 })
+    return serverErrorHandler(e)
   }
 }
