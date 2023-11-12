@@ -6,12 +6,12 @@ import { generateUID } from "@/lib/utils"
 
 import { IMessage } from "@/types/socket"
 import { SocketEvents } from "@/types/enums"
-import useSocket from "@/src/hooks/useSocket"
 import Message from "@/components/Chat/Message"
 
 import debounce from "lodash.debounce"
 import { updateChatRequest } from "@/lib/serverRequests"
 import { useChatDataQuery } from "@/hooks/query/useChatDataQuery"
+import { useSocket } from "@/providers/socket-provider";
 
 interface Props {
   roomId: string

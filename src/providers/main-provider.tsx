@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { queryClient } from "@/lib/queryClient"
 
 import { ToastContainer } from "react-toastify"
+import { SocketProvider } from "@/providers/socket-provider"
 
 export default function ClientProvider({
   children,
@@ -20,7 +21,9 @@ export default function ClientProvider({
     <>
       <SessionProvider session={session} refetchOnWindowFocus>
         <QueryClientProvider client={queryClient}>
-          {children}
+            <SocketProvider>
+                {children}
+            </SocketProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </SessionProvider>

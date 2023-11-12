@@ -31,8 +31,6 @@ function ioHandler(req: NextApiRequest, res: NextApiResponseWithSocket) {
     const io = new Server(httpServer, {
       path,
       addTrailingSlash: false,
-      allowEIO3: true,
-      transports: ["websocket", "polling"],
     })
     res.socket.server.io = io
 
