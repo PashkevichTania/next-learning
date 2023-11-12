@@ -9,6 +9,7 @@ const useSocket = () => {
   )
 
   useEffect(() => {
+    console.log("Socket connection")
     socketRef.current.connect()
     return () => {
       socketRef.current.close()

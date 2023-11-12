@@ -36,7 +36,6 @@ export default function Room({ roomId }: Props) {
       const msgData: IMessage = {
         roomId,
         userId: session?.user.id || "",
-        userName: session?.user.name || "",
         msg: currentMsg,
         time: new Date(),
         uid: generateUID(),

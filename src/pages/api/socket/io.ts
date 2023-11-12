@@ -25,6 +25,7 @@ export const config = {
 
 function ioHandler(req: NextApiRequest, res: NextApiResponseWithSocket) {
   if (!res.socket.server.io) {
+    console.log("Create Socket server")
     const path = "/api/socket/io"
     const httpServer = res.socket.server
     const io = new Server(httpServer, {
