@@ -14,7 +14,7 @@ interface Props {
 }
 
 function ChatLayoutComponent(props: Props) {
-  const { children, isAdmin = false, chatList, isLoading, handleStartChat } = props
+  const { children, isAdmin = false, chatList, isLoading, handleStartChat = () => {} } = props
 
   const pathName = usePathname()
 
@@ -37,7 +37,7 @@ function ChatLayoutComponent(props: Props) {
       <li key={roomId} className="mb-2">
         <Link
           href={isAdmin ? `/admin/${roomId}` : `/chat/${roomId}`}
-          className={pathName.includes(roomId.toString()) ? "active" : ""}
+          className={pathName?.includes(roomId.toString()) ? "active" : ""}
         >
           <span className="overflow-hidden text-ellipsis whitespace-nowrap">Chat id: {roomId}</span>
         </Link>
@@ -68,11 +68,6 @@ function ChatLayoutComponent(props: Props) {
       <div className="w-3/4 p-12">{children}</div>
     </div>
   )
-}
-
-ChatLayoutComponent.defaultProps = {
-  isAdmin: false,
-  handleStartChat: () => {},
 }
 
 export default memo(ChatLayoutComponent)

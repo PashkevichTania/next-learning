@@ -18,6 +18,8 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/button-has-type": "off",
+    "react/prop-types": "off", // Since we do not use prop-types
+    "react/require-default-props": "off", // Since we do not use prop-types
     "no-plusplus": "off",
     "no-param-reassign": "off",
     "class-methods-use-this": "off",
